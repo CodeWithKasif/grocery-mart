@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Deals | Grocery Store</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #2d8b57;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: yellow;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #1e5a38;
+            top: 100%;
+            left: 0;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .dropdown-menu li {
+            padding: 8px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .login-btn,
+        .signup-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+
+        /* Cart Icon */
+        .cart-icon {
+            position: relative;
+            padding: 8px 15px;
+            border-radius: 50px;
+            background: white;
+            color: white;
+            font-weight: bold;
+        }
+
+        .cart-icon span {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+
+        .cart-text {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+
+        /* General Button Styling */
+        .login-btn,
+        .signup-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Login Button (Blue) */
+        .login-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Sign Up Button (Green) */
+        .signup-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background-color: #1e7e34;
+        }
+
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background-color: #2d8b57;
+                position: absolute;
+                width: 100%;
+                top: 60px;
+                left: 0;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+
+        .deals-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            align-items: center;
+
+
+        }
+
+        .deal {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 250px;
+            transition: transform 0.3s;
+        }
+
+        .deal:hover {
+            transform: scale(1.05);
+        }
+
+        .deal img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .deal h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .discount {
+            color: red;
+            font-weight: bold;
+        }
+
+        .price {
+            font-size: 16px;
+        }
+
+        .btn,
+        .add-to-cart {
+            display: inline-block;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .add-to-cart {
+            background-color: #28a745;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .add-to-cart:hover {
+            background-color: #1e7e34;
+        }
+
+        .cart-icon span {
+            background: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            position: absolute;
+            top: -5px;
+            right: -8px;
+        }
+
+
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        .footer {
+            background: linear-gradient(to right, #333, #555);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .footer h4 {
+            color: #ff7f50;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .footer ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin: 8px 0;
+        }
+
+        .footer ul li a {
+            color: #f1f1f1;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: #ff7f50;
+        }
+
+        .social-links {
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 22px;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ff7f50;
+        }
+
+        .footer p {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="Head.html" class="logo">GroceryMart</a>
+
+                <ul class="nav-links">
+                    <li><a href="Head.html">Home</a></li>
+                    <li><a href="Head.html">Shop</a></li>
+                    <li><a href="Deals.html">Deals</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                            <li><a href="DairyProducts.html">Dairy Products</a></li>
+                            <li><a href="SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                            <li><a href="#">Household Essentials</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <input type="text" placeholder="Search..." class="search-bar">
+                    <button class="login-btn" onclick="window.location.href='Login2.html';">Login</button>
+                    <button class="signup-btn" onclick="window.location.href='SignUp1.html';">Sign Up</button>
+
+
+                    <a href="/frontend/Online-groery-store-master/Cart.html" onclick="viewCart()" class="cart-text">
+                        <span>Cart</span>
+                        <span class="cart-icon">
+                            🛒 <span id="cart-count">0</span>
+                        </span>
+                    </a>
+                </div>
+
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="deals-container">
+        <div class="deal">
+            <img src="https://www.bigbasket.com/media/uploads/p/l/40319253_3-fresho-apple-royal-gala.jpg" alt="Organic Apples">
+            <h2>Organic Apples</h2>
+            <p class="discount">Limited Time Offer: 10% OFF!</p>
+            <p class="price">Now: ₹449/kg <del>₹499/kg</del></p>
+            <a href="product.html" class="btn">View Deal</a>
+            <button class="add-to-cart" onclick="addToCart('Organic Apples', 449)">Add to Cart</button>
+        </div>
+        <div class="deal">
+            <img src="https://www.bigbasket.com/media/uploads/p/l/40179391_8-fresho-baby-banana-robusta.jpg" alt="Fresh Bananas">
+            <h2>Fresh Bananas</h2>
+            <p class="discount">Buy 1 Get 1 Free!</p>
+            <p class="price">Now: ₹59/dozen <del>₹79/dozen</del></p>
+            <a href="product.html" class="btn">View Deal</a>
+            <button class="add-to-cart" onclick="addToCart('Fresh Bananas', 59)">Add to Cart</button>
+        </div>
+        <div class="deal">
+            <img src="https://www.bigbasket.com/media/uploads/p/l/40141614_5-amul-amul-cow.jpg" alt="Organic Milk">
+            <h2>Organic Milk</h2>
+            <p class="discount">Flat 20% OFF!</p>
+            <p class="price">Now: ₹39/litre <del>₹49/litre</del></p>
+            <a href="product.html" class="btn">View Deal</a>
+            <button class="add-to-cart" onclick="addToCart('Organic Milk', 39)">Add to Cart</button>
+        </div>
+   
+
+
+    <div class="deal">
+        <img src="https://www.bigbasket.com/media/uploads/p/l/10000069_23-fresho-capsicum-green.jpg" alt="Organic Milk">
+        <h2>Organic Milk</h2>
+        <p class="discount">Flat 20% OFF!</p>
+        <p class="price">Now: ₹39/litre <del>₹49/litre</del></p>
+        <a href="product.html" class="btn">View Deal</a>
+        <button class="add-to-cart" onclick="addToCart('Organic Milk', 39)">Add to Cart</button>
+    </div>
+
+
+<div class="deal">
+    <img src="https://www.bigbasket.com/media/uploads/p/l/20000911_35-fresho-kiwi-green.jpg" alt="Organic Milk">
+    <h2>Organic Milk</h2>
+    <p class="discount">Flat 20% OFF!</p>
+    <p class="price">Now: ₹39/litre <del>₹49/litre</del></p>
+    <a href="product.html" class="btn">View Deal</a>
+    <button class="add-to-cart" onclick="addToCart('Organic Milk', 39)">Add to Cart</button>
+</div>
+
+
+<div class="deal">
+    <img src="https://www.bigbasket.com/media/uploads/p/l/30001779_6-fresho-cherry-imported.jpg" alt="Organic Milk">
+    <h2>Organic Milk</h2>
+    <p class="discount">Flat 20% OFF!</p>
+    <p class="price">Now: ₹39/litre <del>₹49/litre</del></p>
+    <a href="product.html" class="btn">View Deal</a>
+    <button class="add-to-cart" onclick="addToCart('Organic Milk', 39)">Add to Cart</button>
+</div>
+
+<div class="deal">
+    <img src="https://www.bigbasket.com/media/uploads/p/l/40006113_13-pidilite-adhesive-all-fix-clear-non-staining-all-purpose.jpg" alt="Organic Milk">
+    <h2>Organic Milk</h2>
+    <p class="discount">Flat 20% OFF!</p>
+    <p class="price">Now: ₹39/litre <del>₹49/litre</del></p>
+    <a href="product.html" class="btn">View Deal</a>
+    <button class="add-to-cart" onclick="addToCart('Organic Milk', 39)">Add to Cart</button>
+</div>
+
+<div class="deal">
+    <img src="https://www.bigbasket.com/media/uploads/p/l/40318753_4-lindberg-lindberg-truffle-treats-assorted-centre-filled-chocolate-truffles-gift-box14pc-168g.jpg" alt="Organic Milk">
+    <h2>Organic Milk</h2>
+    <p class="discount">Flat 20% OFF!</p>
+    <p class="price">Now: ₹39/litre <del>₹49/litre</del></p>
+    <a href="product.html" class="btn">View Deal</a>
+    <button class="add-to-cart" onclick="addToCart('Organic Milk', 39)">Add to Cart</button>
+</div>
+</div>
+
+    <script>
+        // Function to load cart count from localStorage
+        function loadCartCount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+    
+        // Function to add items to the cart
+        function addToCart(productName, productPrice) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+            // Check if item already exists in the cart
+            let existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity += 1; // Increase quantity if already present
+            } else {
+                cart.push({ name: productName, price: productPrice, quantity: 1 });
+            }
+    
+            // Save updated cart back to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+    
+            // Update cart count
+            document.getElementById('cart-count').innerText = cart.length;
+    
+            alert(productName + " has been added to the cart!");
+        }
+    
+        // Function to view cart (Redirects to cart page)
+        function viewCart() {
+            window.location.href = 'Cart.html';
+        }
+    
+        // Load cart count when page loads
+        document.addEventListener('DOMContentLoaded', loadCartCount);
+    </script>
+    
+
+
+    <footer class="footer">
+        <div class="row">
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="AboutUs.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="ThankYouPage.html">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="shipping.html">Shipping Info</a></li>
+                    <li><a href="returns.html">Returns</a></li>
+                    <li><a href="payment.html">Payment Options</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                    <li><a href="DairyProducts.html">Dairy Products</a></li>
+                    <li><a href="SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                    <li><a href="HouseholdEssentials.html">Household Essentials</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                    <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
+                    <a href="https://www.twitter.com"><i class="fa fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <p>&copy; 2025 Flowery World. All Rights Reserved.</p>
+    </footer>
+
+
+</body>
+
+</html>

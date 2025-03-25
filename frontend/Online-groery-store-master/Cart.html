@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            text-align: center;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            background: linear-gradient(to right, #28a745, #218838);
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-container {
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            transition: background 0.3s;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            transition: transform 0.2s;
+        }
+
+        .cart-item:hover {
+            transform: scale(1.02);
+        }
+
+        .cart-item button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .cart-item button:hover {
+            background: darkred;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .clear-cart, .proceed-payment {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 10px auto;
+            transition: background 0.3s;
+        }
+
+        .clear-cart:hover { background: #c82333; }
+        .proceed-payment { background: #007bff; }
+        .proceed-payment:hover { background: #0056b3; }
+
+        .back-to-shop {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #28a745;
+            transition: color 0.3s;
+        }
+
+        .back-to-shop:hover {
+            color: #218838;
+        }
+
+        .dark-mode-toggle {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .dark-mode {
+            background-color: #212529;
+            color: white;
+        }
+
+        .dark-mode .cart-container {
+            background: #343a40;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <span>🛒 Your Cart</span>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+</header>
+
+<div class="cart-container">
+    <h2>Your Items</h2>
+    <div id="cart-items"></div>
+    <p class="total">Total: ₹<span id="total-price">0</span></p>
+    <button class="clear-cart" onclick="clearCart()">Clear Cart</button>
+    <a href="CheckOut.html" class="proceed-payment">Proceed to Payment</a>
+    <br>
+    <a href="Head.html" class="back-to-shop">← Back to Shop</a>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function updateCartDisplay() {
+        const cartContainer = document.getElementById("cart-items");
+        const totalPriceEl = document.getElementById("total-price");
+        cartContainer.innerHTML = "";
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = "<p>Your cart is empty! 🛒</p>";
+            totalPriceEl.innerText = "0";
+            return;
+        }
+
+        let total = 0;
+        cart.forEach((item, index) => {
+            total += item.price * item.quantity;
+
+            let itemEl = document.createElement("div");
+            itemEl.classList.add("cart-item");
+
+            itemEl.innerHTML = `
+                <span>${item.name} x ${item.quantity} = ₹${item.price * item.quantity}</span>
+                <button onclick="removeFromCart(${index})">Remove</button>
+            `;
+
+            cartContainer.appendChild(itemEl);
+        });
+
+        totalPriceEl.innerText = total;
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartDisplay();
+    }
+
+    function clearCart() {
+        localStorage.removeItem("cart");
+        cart = [];
+        updateCartDisplay();
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+    }
+
+    updateCartDisplay();
+</script>
+
+</body>
+</html>

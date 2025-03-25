@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruits & Vegetables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+        background-color: #2d8b57;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .logo {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        padding: 0;
+    }
+
+    .nav-links li {
+        position: relative;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 12px;
+        transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: yellow;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #1e5a38;
+        top: 100%;
+        left: 0;
+        min-width: 150px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .dropdown-menu li {
+        padding: 8px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .nav-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-bar {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .login-btn,
+    .signup-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+
+    /* Cart Icon */
+    .cart-icon {
+        position: relative;
+        padding: 8px 15px;
+        border-radius: 50px;
+        background: white;
+        color: white;
+        font-weight: bold;
+    }
+
+    .cart-icon span {
+        position: absolute;
+        top: -5px;
+        right: -8px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+
+    .cart-text {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+
+    /* General Button Styling */
+    .login-btn,
+    .signup-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Login Button (Blue) */
+    .login-btn {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Sign Up Button (Green) */
+    .signup-btn {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .signup-btn:hover {
+        background-color: #1e7e34;
+    }
+
+
+    .menu-toggle {
+        display: none;
+        font-size: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            background-color: #2d8b57;
+            position: absolute;
+            width: 100%;
+            top: 60px;
+            left: 0;
+            text-align: center;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        .menu-toggle {
+            display: block;
+        }
+    }
+
+
+    /* Product Container */
+    .shop-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    /* Individual Product Box */
+    .product {
+        width: 200px;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .product:hover {
+        transform: scale(1.05);
+    }
+
+    /* Product Image */
+    .product img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    /* Product Title */
+    .product h3 {
+        font-size: 18px;
+        color: #333;
+        margin: 10px 0;
+    }
+
+    /* Product Price */
+    .product p {
+        font-size: 16px;
+        color: #2d8b57;
+        font-weight: bold;
+    }
+
+    /* Add to Cart Button */
+    .add-to-cart {
+        background-color: #2d8b57;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .add-to-cart:hover {
+        background-color: #1e5a38;
+    }
+
+
+    .quantity-input {
+        width: 50px;
+        padding: 5px;
+        margin: 5px 0;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    .footer {
+        background: linear-gradient(to right, #333, #555);
+        color: white;
+        text-align: center;
+        padding: 40px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .footer .row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 80%;
+        max-width: 1200px;
+    }
+
+    .footer-col {
+        flex: 1;
+        min-width: 200px;
+        margin: 20px;
+        text-align: center;
+    }
+
+    .footer h4 {
+        color: #ff7f50;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .footer ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .footer ul li {
+        margin: 8px 0;
+    }
+
+    .footer ul li a {
+        color: #f1f1f1;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.3s ease;
+    }
+
+    .footer ul li a:hover {
+        color: #ff7f50;
+    }
+
+    .social-links {
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        color: white;
+        font-size: 22px;
+        margin: 0 15px;
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #ff7f50;
+    }
+
+    .footer p {
+        margin-top: 20px;
+        font-size: 14px;
+        opacity: 0.8;
+    }
+</style>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="Head.html" class="logo">GroceryMart</a>
+
+                <ul class="nav-links">
+                    <li><a href="/frontend/Online-groery-store-master/head.html">Home</a></li>
+                    <li><a href="/frontend/Online-groery-store-master/head.html">Shop</a></li>
+                    <li><a href="Deals.html">Deals</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                            <li><a href="DairyProducts.html">Dairy Products</a></li>
+                            <li><a href="SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                            <li><a href="HouseholdEssentials.html">Household Essentials</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <input type="text" placeholder="Search..." class="search-bar">
+                    <button class="login-btn" onclick="window.location.href='Login2.html';">Login</button>
+                    <button class="signup-btn" onclick="window.location.href='SignUp1.html';">Sign Up</button>
+
+
+                    <a href="/frontend/Online-groery-store-master/Cart.html" onclick="viewCart()" class="cart-text">
+                        <span>Cart</span>
+                        <span class="cart-icon">
+                            🛒 <span id="cart-count">0</span>
+                        </span>
+                    </a>
+                </div>
+
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Shop Fresh & Healthy</h2>
+        <div class="shop-container" id="shop"></div>
+    </main>
+
+
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+
+        const products = [
+            { id: 1, name: "Tea Sugar Condiment Sugar Container", price: 30, image: "https://www.bigbasket.com/media/uploads/p/l/40317851_2-kitchen-essentials-tea-sugar-condiment-steel-containercanister-set.jpg" },
+            { id: 2, name: "Aroma Absotute Relax Shower Jel", price: 20, image: "https://www.bigbasket.com/media/uploads/p/l/40090363_11-palmolive-shower-gel-aroma-absolute-relax.jpg" },
+            { id: 3, name: "Shower Cap-Bath Essentials", price: 25, image: "https://www.bigbasket.com/media/uploads/p/l/40124425_2-fiama-shower-cap-bath-essentials.jpg" },
+            { id: 4, name: "304 Food Grade Steel Utensil", price: 35, image: "https://www.bigbasket.com/media/uploads/p/l/40242378_4-petals-304-food-grade-steel-utensilmilk-mesh-net-cover-lid-20-cm-sturdy.jpg" },
+            { id: 5, name: "Stainless Steel Kitchen/Vegetables Y shaped", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40242365_4-petals-stainless-steel-kitchen-vegetablefruit-y-shaped-peeler-highly-polished-finish-sturdy.jpg"},
+            { id: 6, name: "MicroFibre Kitchen", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40204221_3-york-microfibre-kitchen-household-cleaning-cloth-set.jpg" },
+            { id: 7, name: "Stainless Steel Egg Whisk", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40242359_4-petals-stainless-steel-beaterwhisker-highly-polished-finish-sturdy.jpg" },
+            { id: 8, name: "My First Series School Essentials", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40285475_2-faber-castell-my-first-series-school-essentials-574104.jpg" },
+            { id: 9, name: "Lavender Essential Oil", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/30006512_7-soulflower-lavender-essential-oil.jpg" },
+            { id: 10, name: "Nitya Diya Golden Brass Deep-Daily prayer", price: 18, image: "https://www.bigbasket.com/media/uploads/p/l/40228835_2-shubhkart-nitya-brass-devdas-deep.jpg" },
+            { id: 11, name: "RoseMarry Essential Oil For Hair Growth and Skin", price: 30, image: "https://www.bigbasket.com/media/uploads/p/l/40079154_4-soulflower-rosemary-essential-oil.jpg" },
+            { id: 12, name: "Steel Manual Steel press Semi Auto", price: 20, image: "https://www.bigbasket.com/media/uploads/p/l/40242360_4-petals-steel-self-press-semi-auto-whiskhand-mixer-highly-polished-finish-sturdy.jpg" },
+            { id: 13, name: "Hot Utensils Holder", price: 25, image: "https://www.bigbasket.com/media/uploads/p/l/40242355_4-petals-stainless-steel-hot-utensils-holderwire-tong-21-cm-highly-polished-finish-sturdy.jpg" },
+            { id: 14, name: "Tea free Essential Oil-Removes Pimples and Acne", price: 35, image: "https://www.bigbasket.com/media/uploads/p/l/40079158_5-soulflower-tea-tree-essential-oil.jpg" },
+            { id: 15, name: "Silicone pastry", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40242431_1-petals-silicone-pastrybakingcooking-oil-brush-26-cm-assorted-colour-sturdy.jpg"},
+            { id: 16, name: "4 sided Universal Kitchen Grater", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40242321_4-petals-vegetable-grater-slicer-4-sided-blades-rectangle-easy-to-use-16cm-purple.jpg" },
+            { id: 17, name: "EveryDay Essentials For  Women", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/900458369_1-yardley-london-everyday-essentials-for-women.jpg" },
+            { id: 18, name: "Khus HandMade Herbal Soap", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/1224730_2-khadi-natural-khus-handmade-herbal-soap-with-essential-oils-for-all-skin-types.jpg" },
+            { id: 19, name: "Utility Knife", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40242310_4-petals-utility-knife-soft-grip-23-cm-length-sturdy.jpg" },
+            { id: 20, name: "Kitchen Cliner Spray", price: 18, image: "https://www.bigbasket.com/media/uploads/p/l/263939_15-mr-muscles-kitchen-cleaner-powers-through-grease-grime.jpg" },
+            { id: 16, name: "Dishwashing Liquid", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40130359_6-bb-home-dishwash-liquid-lemon-with-aloe-vera.jpg" },
+            { id: 17, name: "Floor Cleaner ", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40206004_5-bb-home-disinfectant-floor-surface-cleaner-citrus-kills-999-germs.jpg" },
+            { id: 18, name: "Garbage Bags", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40173113_11-bb-home-compostable-garbage-bag-medium-green-19x21-inches.jpg" },
+            { id: 19, name: "Matches & Lighters", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40178148_5-anjali-utility-set-knife-lighter-peeler-vibgyor-green.jpg" },
+            { id: 20, name: "Aluminum Foil & Cling Wrap", price: 18, image: "https://4.imimg.com/data4/XC/PG/MY-35144332/cabbage-500x500.jpg" }
+
+
+        ];
+
+        const shopContainer = document.getElementById("shop");
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function updateCartCount() {
+            let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cart-count").innerText = count;
+        }
+
+        function addToCart(productId) {
+            let product = products.find(p => p.id === productId);
+            let quantityInput = document.getElementById(`quantity-${productId}`);
+            let quantity = parseInt(quantityInput.value) || 1;  // Get quantity, default to 1 if empty
+
+            let existingProduct = cart.find(item => item.id === productId);
+
+            if (existingProduct) {
+                existingProduct.quantity += quantity;  // Add selected quantity
+            } else {
+                cart.push({ ...product, quantity: quantity });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            alert(`${quantity} x ${product.name} added to cart!`);
+        }
+
+        products.forEach(product => {
+            shopContainer.innerHTML = products.map(product => `
+    <div class="product">
+        <a href="product.html?id=${product.id}">
+            <img src="${product.image}" alt="${product.name}">
+        </a>
+        <h3>${product.name}</h3>
+        <p>₹${product.price}</p>
+        <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" value="1">
+        <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+    </div>
+`).join('');
+
+        });
+
+        updateCartCount();
+
+
+
+        fetch('https://example.com/api/products')
+    .then(response => response.json())
+    .then(data => {
+        let productsContainer = document.getElementById("products"); // Get the product section
+
+        data.forEach(product => { // Loop through each product
+            let productElement = document.createElement("div"); // Create a div
+            productElement.innerHTML = `
+                <img src="${product.image}" onclick="redirectToProduct(${product.id})">
+                <h2>${product.name}</h2>
+                <p>${product.price}</p>
+            `;
+            productsContainer.appendChild(productElement); // Add product to the page
+        });
+    });
+
+function redirectToProduct(id) {
+    window.location.href = `product.html?id=${id}`; // Open product page with product ID
+}
+
+    </script>
+
+    <footer class="footer">
+        <div class="row">
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="AboutUs.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="shipping.html">Shipping Info</a></li>
+                    <li><a href="returns.html">Returns</a></li>
+                    <li><a href="payment.html">Payment Options</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="flower.html">Fruits & Vegetables</a></li>
+                    <li><a href="vegetables.html">Dairy Products</a></li>
+                    <li><a href="grains.html">Snacks & Beverages</a></li>
+                    <li><a href="fruits.html">Household Essentials</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                    <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
+                    <a href="https://www.twitter.com"><i class="fa fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <p>&copy; 2025 Flowery World. All Rights Reserved.</p>
+    </footer>
+
+
+</body>
+
+</html>

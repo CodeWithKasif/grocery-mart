@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruits & Vegetables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
+</head>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+        background-color:aliceblue;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .logo {
+        color:navy;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+       
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        padding: 0;
+    }
+
+    .nav-links li {
+        position: relative;
+    }
+
+    .nav-links a {
+        color: li;
+        text-decoration: none;
+        padding: 8px 12px;
+        transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: yellow;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #1e5a38;
+        top: 100%;
+        left: 0;
+        min-width: 150px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .dropdown-menu li {
+        padding: 8px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .nav-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-bar {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .login-btn,
+    .signup-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+
+    /* Cart Icon */
+    .cart-icon {
+        position: relative;
+        padding: 8px 15px;
+        border-radius: 50px;
+        background: white;
+        color: white;
+        font-weight: bold;
+    }
+
+    .cart-icon span {
+        position: absolute;
+        top: -5px;
+        right: -8px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+
+    .cart-text {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+
+    /* General Button Styling */
+    .login-btn,
+    .signup-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Login Button (Blue) */
+    .login-btn {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Sign Up Button (Green) */
+    .signup-btn {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .signup-btn:hover {
+        background-color: #1e7e34;
+    }
+
+
+    .menu-toggle {
+        display: none;
+        font-size: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            background-color: #2d8b57;
+            position: absolute;
+            width: 100%;
+            top: 60px;
+            left: 0;
+            text-align: center;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        .menu-toggle {
+            display: block;
+        }
+    }
+
+
+    /* Product Container */
+    .shop-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    /* Individual Product Box */
+    .product {
+        width: 200px;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .product:hover {
+        transform: scale(1.05);
+    }
+
+    /* Product Image */
+    .product img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    /* Product Title */
+    .product h3 {
+        font-size: 18px;
+        color: #333;
+        margin: 10px 0;
+    }
+
+    /* Product Price */
+    .product p {
+        font-size: 16px;
+        color: #2d8b57;
+        font-weight: bold;
+    }
+
+    /* Add to Cart Button */
+    .add-to-cart {
+        background-color: #2d8b57;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .add-to-cart:hover {
+        background-color: #1e5a38;
+    }
+
+
+    .quantity-input {
+        width: 50px;
+        padding: 5px;
+        margin: 5px 0;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    .footer {
+        background: linear-gradient(to right, #333, #555);
+        color: white;
+        text-align: center;
+        padding: 40px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .footer .row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 80%;
+        max-width: 1200px;
+    }
+
+    .footer-col {
+        flex: 1;
+        min-width: 200px;
+        margin: 20px;
+        text-align: center;
+    }
+
+    .footer h4 {
+        color: #ff7f50;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .footer ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .footer ul li {
+        margin: 8px 0;
+    }
+
+    .footer ul li a {
+        color: #f1f1f1;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.3s ease;
+    }
+
+    .footer ul li a:hover {
+        color: #ff7f50;
+    }
+
+    .social-links {
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        color: white;
+        font-size: 22px;
+        margin: 0 15px;
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #ff7f50;
+    }
+
+    .footer p {
+        margin-top: 20px;
+        font-size: 14px;
+        opacity: 0.8;
+    }
+</style>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="Head.html" class="logo">GroceryMart</a>
+
+                <ul class="nav-links">
+                    <li><a href="Head.html">Home</a></li>
+                    <li><a href="Head.html">Shop</a></li>
+                    <li><a href="Deals.html">Deals</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/frontend/Online-groery-store-master/pages/FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                            <li><a href="/frontend/Online-groery-store-master/pages/DairyProducts.html">Dairy Products</a></li>
+                            <li><a href="/frontend/Online-groery-store-master/pages/SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                            <li><a href="/frontend/Online-groery-store-master/pages/HouseholdEssentials.html">Household Essentials</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <!-- <input type="text" placeholder="Search..." class="search-bar"> -->
+                    <!-- <button class="login-btn" onclick="window.location.href='Login2.html';">Login</button> -->
+                    <button class="signup-btn" onclick="window.location.href='SignUp1.html';">Sign Up</button>
+
+
+                    <a href="Cart.html" onclick="viewCart()" class="cart-text">
+                        <span>Cart</span>
+                        <span class="cart-icon">
+                            🛒 <span id="cart-count">0</span>
+                        </span>
+                    </a>
+                </div>
+
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h2 style="text-align: center; margin-top: 50px; font-size: 45px;">Shop Fresh & Healthy</h2>
+        <div class="shop-container" id="shop"></div>
+    </main>
+
+
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+
+        const products = [
+            { id: 1, name: "Apple", price: 30, image: "https://fruitboxco.com/cdn/shop/products/image_400x.jpg" },
+            { id: 2, name: "Oranges", price: 20, image: "https://img.freepik.com/free-photo/orange-white-white_144627-16571.jpg" },
+            { id: 3, name: "grapes", price: 25, image: "https://rukminim2.flixcart.com/image/416/416/kr6oeq80/plant-sapling/b/f/7/long-seedless-sweet-wichfinger-grape-angoor-plant-in-pot-live-original-imag5f255ghnwzqf.jpeg" },
+            { id: 4, name: "Mangoes", price: 35, image: "https://plantskingdom.in/cdn/shop/products/1_5ac8a2cb-21a4-4a07-97dc-f3ad1ae36ea4_669x669.jpg" },
+            { id: 5, name: "Watermelon", price: 40, image: "https://5.imimg.com/data5/SELLER/Default/2022/12/DM/EC/KE/49293026/fresh-watermelon-fruit-500x500.webp"},
+            { id: 6, name: "Tomatoes", price: 40, image: "https://5.imimg.com/data5/SELLER/Default/2023/8/336603012/KL/DQ/UK/195222806/red-tomato-vegetable-500x500.jpg" },
+            { id: 7, name: "Potatoes", price: 40, image: "https://finegrocery.in/wp-content/uploads/2021/03/veg_16.jpg" },
+            { id: 8, name: "Onions", price: 40, image: "https://rukminim2.flixcart.com/image/416/416/xif0q/plant-seed/n/x/u/2000-red-onion-vegetable-onions-osd2211-2000-seeds-watika-original-imaggt3xhq9kz8eg.jpeg" },
+            { id: 9, name: "Peas", price: 40, image: "https://www.plantsnplanters.com/media/catalog/product/cache/1/thumbnail/600x/17f82f742ffe127f42dca9de82fb58b1/P/e/Peas-PV-10-Vegetable-Seeds_1.jpg" },
+            { id: 10, name: "Cabbage", price: 18, image: "https://4.imimg.com/data4/XC/PG/MY-35144332/cabbage-500x500.jpg" },
+            { id: 11, name: "Milk", price: 30, image: "https://www.bigbasket.com/media/uploads/p/l/40090894_6-amul-taaza.jpg" },
+            { id: 12, name: "Cheese", price: 20, image: "https://www.bigbasket.com/media/uploads/p/l/104615_9-amul-processed-cheese-cubes.jpg" },
+            { id: 13, name: "Butter", price: 25, image: "https://www.bigbasket.com/media/uploads/p/l/104864_8-amul-butter-pasteurised.jpg" },
+            { id: 14, name: "Yogurt", price: 35, image: "https://www.bigbasket.com/media/uploads/p/l/40313757_3-milky-mist-natural-greek-yoghurt.jpg" },
+            { id: 15, name: "Paneer", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/30009589_1-pure-diet-soy-paneertofu-rich-in-proteincalcium.jpg"},
+            { id: 16, name: "Popcorn", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40097848_2-act-ii-rte-butter-popcorn-pp.jpg" },
+            { id: 17, name: "Nachos & Dip", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/1200734_3-cornitos-exotic-flavor-nachos-salsa-combo.jpg" },
+            { id: 18, name: "Biscuits & Cookies", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/220244_9-britannia-marie-gold-biscuits.jpg" },
+            { id: 19, name: "Coffee", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/1204495_2-bru-instant-coffee.jpg" },
+            { id: 20, name: "Tea", price: 18, image: "https://www.bigbasket.com/media/uploads/p/l/240065_20-tata-tea-gold-tea.jpg" },
+            { id: 16, name: "Dishwashing Liquid", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40130359_6-bb-home-dishwash-liquid-lemon-with-aloe-vera.jpg" },
+            { id: 17, name: "Floor Cleaner ", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40206004_5-bb-home-disinfectant-floor-surface-cleaner-citrus-kills-999-germs.jpg" },
+            { id: 18, name: "Garbage Bags", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40173113_11-bb-home-compostable-garbage-bag-medium-green-19x21-inches.jpg" },
+            { id: 19, name: "Matches & Lighters", price: 40, image: "https://www.bigbasket.com/media/uploads/p/l/40178148_5-anjali-utility-set-knife-lighter-peeler-vibgyor-green.jpg" },
+            { id: 20, name: "Aluminum Foil & Cling Wrap", price: 18, image: "https://m.media-amazon.com/images/I/31S4lx-KG6L._SX300_SY300_QL70_FMwebp_.jpg" }
+
+
+        ];
+
+        const shopContainer = document.getElementById("shop");
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function updateCartCount() {
+            let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cart-count").innerText = count;
+        }
+
+        function addToCart(productId) {
+            let product = products.find(p => p.id === productId);
+            let quantityInput = document.getElementById(`quantity-${productId}`);
+            let quantity = parseInt(quantityInput.value) || 1;  // Get quantity, default to 1 if empty
+
+            let existingProduct = cart.find(item => item.id === productId);
+
+            if (existingProduct) {
+                existingProduct.quantity += quantity;  // Add selected quantity
+            } else {
+                cart.push({ ...product, quantity: quantity });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            alert(`${quantity} x ${product.name} added to cart!`);
+        }
+
+        products.forEach(product => {
+            shopContainer.innerHTML = products.map(product => `
+    <div class="product">
+        <a href="product.html?id=${product.id}">
+            <img src="${product.image}" alt="${product.name}">
+        </a>
+        <h3>${product.name}</h3>
+        <p>₹${product.price}</p>
+        <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" value="1">
+        <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+    </div>
+`).join('');
+
+        });
+
+        updateCartCount();
+
+
+
+        fetch('https://example.com/api/products')
+    .then(response => response.json())
+    .then(data => {
+        let productsContainer = document.getElementById("products"); // Get the product section
+
+        data.forEach(product => { // Loop through each product
+            let productElement = document.createElement("div"); // Create a div
+            productElement.innerHTML = `
+                <img src="${product.image}" onclick="redirectToProduct(${product.id})">
+                <h2>${product.name}</h2>
+                <p>${product.price}</p>
+            `;
+            productsContainer.appendChild(productElement); // Add product to the page
+        });
+    });
+
+function redirectToProduct(id) {
+    window.location.href = `product.html?id=${id}`; // Open product page with product ID
+}
+
+    </script>
+
+    <footer class="footer">
+        <div class="row">
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="AboutUs.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="ThankYouPage.html">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="shipping.html">Shipping Info</a></li>
+                    <li><a href="returns.html">Returns</a></li>
+                    <li><a href="payment.html">Payment Options</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                    <li><a href="DairyProducts.html">Dairy Products</a></li>
+                    <li><a href="SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                    <li><a href="HouseholdEssentials.html">Household Essentials</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                    <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
+                    <a href="https://www.twitter.com"><i class="fa fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <p>&copy; 2025 Flowery World. All Rights Reserved.</p>
+    </footer>
+
+
+</body>
+
+</html>

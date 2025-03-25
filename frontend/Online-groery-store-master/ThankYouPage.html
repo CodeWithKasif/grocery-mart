@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thank You - Feedback</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .star-rating {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ccc;
+        }
+        .star-rating .selected {
+            color: #ffc107;
+        }
+        .btn-primary {
+            width: 100%;
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>🎉 Thank You for Your Order! 🎉</h2>
+        <p>Your order has been successfully placed. We appreciate your business!</p>
+        
+        <h4>Rate Your Experience</h4>
+        <div class="star-rating">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+        </div>
+        
+        <h4 class="mt-3">Leave a Feedback</h4>
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" rows="4" placeholder="Share your thoughts..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+        
+        <a href="Head.html" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".star").click(function() {
+            $(".star").removeClass("selected");
+            $(this).addClass("selected").prevAll().addClass("selected");
+        });
+    });
+</script>
+
+</body>
+</html>

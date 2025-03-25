@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+   body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+        background-color: #2d8b57;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .logo {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        padding: 0;
+    }
+
+    .nav-links li {
+        position: relative;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 12px;
+        transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: yellow;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #1e5a38;
+        top: 100%;
+        left: 0;
+        min-width: 150px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .dropdown-menu li {
+        padding: 8px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .nav-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-bar {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .login-btn,
+    .signup-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+
+    /* Cart Icon */
+    .cart-icon {
+        position: relative;
+        padding: 8px 15px;
+        border-radius: 50px;
+        background: white;
+        color: white;
+        font-weight: bold;
+    }
+
+    .cart-icon span {
+        position: absolute;
+        top: -5px;
+        right: -8px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+
+    .cart-text {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+
+    /* General Button Styling */
+    .login-btn,
+    .signup-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Login Button (Blue) */
+    .login-btn {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Sign Up Button (Green) */
+    .signup-btn {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .signup-btn:hover {
+        background-color: #1e7e34;
+    }
+
+
+    .menu-toggle {
+        display: none;
+        font-size: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            background-color: #2d8b57;
+            position: absolute;
+            width: 100%;
+            top: 60px;
+            left: 0;
+            text-align: center;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        .menu-toggle {
+            display: block;
+        }
+    }
+
+
+
+
+    .contact {
+    background: #f9f9f9;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.contact .container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact h2 {
+    font-size: 28px;
+    color: #2d8b57;
+    margin-bottom: 10px;
+}
+
+.contact p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-form label {
+    font-weight: bold;
+    text-align: left;
+    display: block;
+    color: #333;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #2d8b57;
+    box-shadow: 0 0 5px rgba(45, 139, 87, 0.5);
+}
+
+.contact-form button {
+    background: #2d8b57;
+    color: white;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.contact-form button:hover {
+    background: #237146;
+}
+
+#responseMessage {
+    color: green;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        .footer {
+            background: linear-gradient(to right, #333, #555);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .footer h4 {
+            color: #ff7f50;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .footer ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin: 8px 0;
+        }
+
+        .footer ul li a {
+            color: #f1f1f1;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: #ff7f50;
+        }
+
+        .social-links {
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 22px;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ff7f50;
+        }
+
+        .footer p {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="Head.html" class="logo">GroceryMart</a>
+
+                <ul class="nav-links">
+                    <li><a href="Head.html">Home</a></li>
+                    <li><a href="Head.html">Shop</a></li>
+                    <li><a href="Deals.html">Deals</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                            <li><a href="DairyProducts.html">Dairy Products</a></li>
+                            <li><a href="SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                            <li><a href="#">Household Essentials</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <input type="text" placeholder="Search..." class="search-bar">
+                    <button class="login-btn" onclick="window.location.href='Login2.html';">Login</button>
+                    <button class="signup-btn" onclick="window.location.href='SignUp1.html';">Sign Up</button>
+
+
+                    <a href="Cart.html" onclick="viewCart()" class="cart-text">
+                        <span>Cart</span>
+                        <span class="cart-icon">
+                            🛒 <span id="cart-count">0</span>
+                        </span>
+                    </a>
+                </div>
+
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Have questions? We’d love to hear from you!</p>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                    
+                    <button type="submit">Send Message</button>
+                    <p id="responseMessage" style="color: green; text-align: center; display: none;">Message sent successfully!</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let name = document.getElementById('name').value.trim();
+            let email = document.getElementById('email').value.trim();
+            let message = document.getElementById('message').value.trim();
+            let responseMessage = document.getElementById('responseMessage');
+            
+            if (name === '' || email === '' || message === '') {
+                alert('Please fill out all fields.');
+                return;
+            }
+            
+            responseMessage.style.display = 'block';
+            setTimeout(() => {
+                responseMessage.style.display = 'none';
+                document.getElementById('contactForm').reset();
+            }, 3000);
+        });
+    </script>
+
+
+<footer class="footer">
+    <div class="row">
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="AboutUs.html">About Us</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="ThankYouPage.html">Feedback</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Support</h4>
+            <ul>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="shipping.html">Shipping Info</a></li>
+                <li><a href="returns.html">Returns</a></li>
+                <li><a href="payment.html">Payment Options</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="FruitsAndVegetables.html">Fruits & Vegetables</a></li>
+                <li><a href="DairyProducts.html">Dairy Products</a></li>
+                <li><a href="SnaksAndBeverages.html">Snacks & Beverages</a></li>
+                <li><a href="HouseholdEssentials.html">Household Essentials</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+                <a href="https://www.instagram.com"><i class="fa fa-instagram"></i></a>
+                <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
+                <a href="https://www.twitter.com"><i class="fa fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    <p>&copy; 2025 Flowery World. All Rights Reserved.</p>
+</footer>
+
+
+
+
+</body>
+</html>

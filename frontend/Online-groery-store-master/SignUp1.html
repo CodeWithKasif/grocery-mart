@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: 350px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        h2 {
+            margin-bottom: 25px;
+            color: #495057;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .link {
+            margin-top: 20px;
+            color: #6c757d;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .link:hover {
+            color: #495057;
+            text-decoration: underline;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            cursor: pointer;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .password-toggle:hover {
+            color: #495057;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h2>Login</h2>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                <span class="password-toggle" onclick="togglePassword('login-password')">
+                    <i class="far fa-eye"></i>
+                </span>
+            </div>
+            <button type="submit" class="btn" id="login-btn">
+                <span id="login-btn-text">Login</span>
+            </button>
+            <p class="message" id="login-message"></p>
+        </form>
+        <p class="link" onclick="toggleSignup()">Don't have an account? Sign up here.</p>
+        <p class="link" onclick="forgotPassword()">Forgot your password?</p>
+    </div>
+    
+    <div class="container" id="signup-container" style="display: none;">
+        <h2>Create Account</h2>
+        
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" name="username" placeholder="Choose a username" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+                <span class="password-toggle" onclick="togglePassword('signup-password')">
+                    <i class="far fa-eye"></i>
+                </span>
+            </div>
+            <button type="submit" class="btn" id="signup-btn">
+                <span id="signup-btn-text">Sign Up</span>
+            </button>
+            <p class="message" id="signup-message"></p>
+        </form>
+        <p class="link" onclick="toggleSignup()">Already have an account? Login here.</p>
+    </div>
+    
+    <script>
+        // Toggle between login and signup forms
+        function toggleSignup() {
+            const loginContainer = document.getElementById('login-container');
+            const signupContainer = document.getElementById('signup-container');
+            
+            if (loginContainer.style.display === 'none') {
+                loginContainer.style.display = 'block';
+                signupContainer.style.display = 'none';
+            } else {
+                loginContainer.style.display = 'none';
+                signupContainer.style.display = 'block';
+            }
+            
+            // Clear messages when switching forms
+            document.getElementById('login-message').textContent = '';
+            document.getElementById('signup-message').textContent = '';
+        }
+
+        // Toggle password visibility
+        function togglePassword(id) {
+            const passwordField = document.getElementById(id);
+            const toggleIcon = passwordField.nextElementSibling.querySelector('i');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Forgot password handler
+        function forgotPassword() {
+            const email = prompt("Please enter your email address to reset your password:");
+            if (email) {
+                alert(`Password reset link has been sent to ${email} (simulated)`);
+            }
+        }
+
+        // Show loading state on buttons
+        function showLoading(buttonId) {
+            const btn = document.getElementById(buttonId);
+            const btnText = document.getElementById(`${buttonId}-text`);
+            btn.disabled = true;
+            btnText.innerHTML = `<span class="loading"></span> Processing...`;
+        }
+
+        // Hide loading state on buttons
+        function hideLoading(buttonId) {
+            const btn = document.getElementById(buttonId);
+            const btnText = document.getElementById(`${buttonId}-text`);
+            btn.disabled = false;
+            btnText.textContent = buttonId === 'login-btn' ? 'Login' : 'Sign Up';
+        }
+
+        // Signup form submission
+        document.getElementById('signup-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            showLoading('signup-btn');
+
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const messageElement = document.getElementById('signup-message');
+            
+            try {
+                const response = await fetch('http://localhost:5000/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                
+                messageElement.textContent = data.message;
+                messageElement.className = response.ok ? 'message success' : 'message error';
+                
+                if (response.ok) {
+                    // Clear form on successful signup
+                    document.getElementById('signup-form').reset();
+                }
+            } catch (error) {
+                messageElement.textContent = 'Network error. Please try again.';
+                messageElement.className = 'message error';
+            } finally {
+                hideLoading('signup-btn');
+            }
+        });
+
+        // Login form submission
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            showLoading('login-btn');
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const messageElement = document.getElementById('login-message');
+            
+            try {
+                const response = await fetch('http://localhost:5000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                messageElement.textContent = data.message;
+                messageElement.className = response.ok ? 'message success' : 'message error';
+
+                if (response.ok) {
+                    window.location.href = 'head.html'; // Redirect after successful login
+                }
+            } catch (error) {
+                messageElement.textContent = 'Network error. Please try again.';
+                messageElement.className = 'message error';
+            } finally {
+                hideLoading('login-btn');
+            }
+        });
+
+        // Input validation for username (alphanumeric only)
+        document.getElementById('signup-username').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+        });
+
+        // Input validation for password strength
+        document.getElementById('signup-password').addEventListener('input', function(e) {
+            const password = this.value;
+            
+            if (password.length > 0) {
+                if (password.length < 6) {
+                    this.style.borderColor = '#dc3545'; // red
+                } else if (password.length < 10) {
+                    this.style.borderColor = '#ffc107'; // yellow
+                } else {
+                    this.style.borderColor = '#28a745'; // green
+                }
+            } else {
+                this.style.borderColor = '#ced4da';
+            }
+        });
+    </script>
+</body>
+</html>

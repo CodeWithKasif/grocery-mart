@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input, button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmation</h1>
+        <label for="orderId">Enter Order ID:</label>
+        <input type="text" id="orderId">
+        <button onclick="fetchOrderDetails()">Get Order Details</button>
+        <div id="orderDetails"></div>
+    </div>
+
+    <script>
+        async function fetchOrderDetails() {
+    const orderId = document.getElementById("orderId").value;
+    if (!orderId) {
+        alert("Please enter an order ID");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/order-details/${orderId}`);
+        const data = await response.json();
+
+        if (response.status !== 200) {
+            document.getElementById("orderDetails").innerHTML = `<p style="color:red">${data.error}</p>`;
+            return;
+        }
+
+        let detailsHTML = `
+            <h2>Order #${data.id}</h2>
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Email:</strong> ${data.email}</p>
+            <p><strong>Address:</strong> ${data.address}</p>
+            <p><strong>Phone:</strong> ${data.phone}</p>
+            <p><strong>Total Amount:</strong> $${data.total_amount}</p>
+            <p><strong>Expected Shipping Date:</strong> ${data.shipping_date}</p>
+            <h3>Items:</h3>
+            <ul>
+        `;
+
+        data.items.forEach(item => {
+            detailsHTML += `<li>${item.product_name} (x${item.quantity}) - $${item.price}</li>`;
+        });
+
+        detailsHTML += `</ul>`;
+        document.getElementById("orderDetails").innerHTML = detailsHTML;
+    } catch (error) {
+        console.error("Error fetching order details:", error);
+    }
+}
+
+    </script>
+    </body>
+</html>
